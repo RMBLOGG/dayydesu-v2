@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: dayydesu-anime
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT --timeout 120
+    disk:
+      name: poster-cache
+      mountPath: /opt/render/project/src/static/poster_cache
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: SECRET_KEY
+        generateValue: true
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: IMAGE_CACHE_DIR
+        value: /opt/render/project/src/static/poster_cache
